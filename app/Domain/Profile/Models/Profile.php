@@ -2,7 +2,6 @@
 
 namespace App\Domain\Profile\Models;
 
-use App\Domain\Administrator\Factories\AdministratorFactory;
 use App\Domain\Administrator\Models\Administrator;
 use App\Domain\Comment\Models\Comment;
 use App\Domain\Profile\Factories\ProfileFactory;
