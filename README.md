@@ -1,5 +1,15 @@
 ## Test Api Laravel 11
 
+### Installation de la version 11 de Laravel 
+``composer create-project laravel/laravel testHellocse "11.*" ``
+
+### Installation sanctum pour la gestion 
+``composer require laravel/sanctum``
+
+``php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"``
+
+``php artisan migrate``
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
