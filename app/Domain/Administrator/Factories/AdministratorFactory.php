@@ -12,6 +12,8 @@ use Illuminate\Support\Str;
  */
 class AdministratorFactory extends Factory
 {
+    protected $model = Administrator::class;
+
     /**
      * The current password being used by the factory.
      */

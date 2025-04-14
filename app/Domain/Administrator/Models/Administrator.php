@@ -2,7 +2,7 @@
 
 namespace App\Domain\Administrator\Models;
 
-use Database\Factories\AdministratorFactory;
+use App\Domain\Administrator\Factories\AdministratorFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -47,5 +47,10 @@ class Administrator extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected static function newFactory()
+    {
+        return AdministratorFactory::new();
     }
 }

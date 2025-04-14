@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ProfileFactory extends Factory
 {
+    protected $model = Profile::class;
     /**
      * Define the model's default state.
      *

@@ -5,6 +5,7 @@ namespace App\Domain\Profile\Models;
 use App\Domain\Administrator\Factories\AdministratorFactory;
 use App\Domain\Administrator\Models\Administrator;
 use App\Domain\Comment\Models\Comment;
+use App\Domain\Profile\Factories\ProfileFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Profile extends Model
 {
-    /** @use HasFactory<AdministratorFactory> */
+    /** @use HasFactory<ProfileFactory> */
     use HasFactory;
 
     /**
@@ -42,5 +43,10 @@ class Profile extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    protected static function newFactory()
+    {
+        return ProfileFactory::new();
     }
 }

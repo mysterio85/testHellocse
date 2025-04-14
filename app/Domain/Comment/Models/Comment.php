@@ -4,6 +4,7 @@ namespace App\Domain\Comment\Models;
 
 use App\Domain\Administrator\Factories\AdministratorFactory;
 use App\Domain\Administrator\Models\Administrator;
+use App\Domain\Comment\Factories\CommentFactory;
 use App\Domain\Profile\Models\Profile;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Comment extends Model
 {
-    /** @use HasFactory<AdministratorFactory> */
+    /** @use HasFactory<CommentFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -28,5 +29,10 @@ class Comment extends Model
     public function profile(): BelongsTo
     {
         return $this->belongsTo(Profile::class);
+    }
+
+    protected static function newFactory()
+    {
+        return CommentFactory::new();
     }
 }

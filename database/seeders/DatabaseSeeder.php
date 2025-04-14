@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Domain\Administrator\Models\Administrator;
+use App\Domain\Comment\Models\Comment;
+use App\Domain\Profile\Models\Profile;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,11 +14,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
+        Administrator::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        Administrator::factory(5)->create()->each(function ($administrator) {
+            Profile::factory(3)->create(['administrator_id' => $administrator->id])
+                ->each(function ($profile) use ($administrator) {
+                    Comment::factory()->create([
+                        'administrator_id' => $administrator->id,
+                        'profile_id' => $profile->id,
+                    ]);
+                });
+        });
     }
 }
