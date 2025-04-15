@@ -28,23 +28,30 @@ class Profile extends Model
 
 
     /**
-     * @return BelongsTo
+     * @return BelongsTo<Administrator, Profile>
      */
-    public function user(): BelongsTo
+    public function administrator(): BelongsTo
     {
-        return $this->belongsTo(Administrator::class, 'administrator_id');
+        /** @var BelongsTo<Administrator, Profile> $administrator */
+        $administrator = $this->belongsTo(Administrator::class);
+
+        return $administrator;
     }
 
 
     /**
-     * @return HasMany
+     * @return HasMany<Comment, Profile>
      */
     public function comments(): HasMany
     {
-        return $this->hasMany(Comment::class);
+        /** @var HasMany<Comment, Profile> $comments */
+        $comments = $this->hasMany(Comment::class);
+
+        return $comments;
     }
 
-    protected static function newFactory()
+
+    protected static function newFactory(): ProfileFactory
     {
         return ProfileFactory::new();
     }

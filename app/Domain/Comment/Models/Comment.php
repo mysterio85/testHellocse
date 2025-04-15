@@ -20,17 +20,29 @@ class Comment extends Model
         'profile_id',
     ];
 
+    /**
+     * @return BelongsTo<Administrator, Comment>
+     */
     public function administrator(): BelongsTo
     {
-        return $this->belongsTo(Administrator::class, 'administrator_id');
+        /** @var BelongsTo<Administrator, Comment> $administrator */
+        $administrator = $this->belongsTo(Administrator::class, 'administrator_id');
+
+        return $administrator;
     }
 
+    /**
+     * @return BelongsTo<Profile, Comment>
+     */
     public function profile(): BelongsTo
     {
-        return $this->belongsTo(Profile::class);
+        /** @var BelongsTo<Profile, Comment> $profile */
+        $profile = $this->belongsTo(Profile::class);
+
+        return $profile;
     }
 
-    protected static function newFactory()
+    protected static function newFactory(): CommentFactory
     {
         return CommentFactory::new();
     }

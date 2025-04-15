@@ -10,8 +10,8 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Administrator extends Authenticatable
 {
-    /** @mixin HasFactory<AdministratorFactory> */
     use HasApiTokens;
+    /** @use HasFactory<AdministratorFactory> */
     use HasFactory;
     use Notifiable;
 
@@ -49,7 +49,7 @@ class Administrator extends Authenticatable
         ];
     }
 
-    protected static function newFactory()
+    protected static function newFactory(): AdministratorFactory
     {
         return AdministratorFactory::new();
     }

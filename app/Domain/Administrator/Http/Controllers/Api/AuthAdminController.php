@@ -33,9 +33,13 @@ class AuthAdminController extends Controller
 
     public function logout(Request $request): JsonResponse
     {
-        $request->user()?->currentAccessToken()->delete();
+        $user = $request->user();
 
-        return response()->json(['message' => 'Déconnexion réussie.'], 201);
+        if ($user?->currentAccessToken()) {
+            $user->currentAccessToken()->delete();
+        }
+
+        return response()->json(['message' => 'Déconnexion réussie.'], 200);
     }
 
 }

@@ -4,61 +4,43 @@ namespace App\Domain\Profile\Http\Controllers\Api;
 
 use App\Domain\Profile\Http\Requests\StoreProfileRequest;
 use App\Domain\Profile\Http\Requests\UpdateProfileRequest;
-use App\Domain\Profile\Http\Resources\ProfileResource;
-use App\Domain\Profile\Models\Profile;
+use App\Domain\Profile\Services\ProfileService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
+    public function __construct(protected ProfileService $profileService)
+    {
+    }
+
     public function index(): JsonResponse
     {
-        $profiles = Profile::where('status', 'active')->get();
+        $profiles = $this->profileService->getAllActiveProfiles();
 
-        return response()->json(ProfileResource::collection($profiles));
+        return response()->json($profiles);
     }
 
     public function store(StoreProfileRequest $request): JsonResponse
     {
-        $request->validated();
-        $path = $request->file('image_path')->store('profiles', 'public');
-        $profile = Profile::create([
-            'last_name' => $request->last_name,
-            'first_name' => $request->first_name,
-            'image_path' => $path,
-            'status' => $request->status,
-            'administrator_id' => auth()->id(),
-        ]);
+        $profile = $this->profileService->createProfile($request->validated());
 
         return response()->json($profile, 201);
     }
 
-    public function update(UpdateProfileRequest $request, int $profile): JsonResponse
+    public function update(UpdateProfileRequest $request, int $profileId): JsonResponse
     {
-        $profile = Profile::findOrFail($profile);
-        $validated = $request->validated();
-        $validated['administrator_id'] = auth()->id();
-
-        if ($request->hasFile('image_path')) {
-            $image = $request->file('image_path')->store('profiles', 'public');
-            $validated['image_path'] = $image;
-        }
-        $profile->update($validated);
+        $profile = $this->profileService->updateProfile($request, $profileId);
 
         return response()->json([
             'message' => 'Profil mis à jour',
             'profile' => $profile
-        ]);
+        ], 201);
     }
 
-    public function destroy(Profile $profile): JsonResponse
+    public function destroy(int $profileId): JsonResponse
     {
-        if ($profile->image_path) {
-            Storage::disk('public')->delete($profile->image_path);
-        }
-
-        $profile->delete();
+        $this->profileService->delete($profileId);
 
         return response()->json(['message' => 'Le profil a été supprimé avec succès']);
     }
