@@ -51,7 +51,7 @@ class ProfileService
 
     public function delete(int $profileId): ?bool
     {
-        $profile = Profile::findOrFail($profileId);
+        $profile = $this->profileRepository->getById($profileId);
 
         return $this->deleteAction->execute($profile);
     }
