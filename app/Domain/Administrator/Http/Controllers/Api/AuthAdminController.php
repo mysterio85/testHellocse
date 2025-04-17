@@ -29,6 +29,8 @@ class AuthAdminController extends Controller
             return response()->json(['message' => 'Identifiants incorrects'], 401);
         }
 
+        $admin->tokens()->delete();
+
         $token = $admin->createToken('admin-token')->plainTextToken;
 
         return response()->json([

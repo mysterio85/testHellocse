@@ -17,23 +17,26 @@ class CommentService
 
     public function createComment(StoreCommentRequest $request): JsonResponse
     {
-        $adminId = auth()->id();
-        $profileId = $request->input('profile_id');
-        if (!is_int($adminId)) {
-            throw new \InvalidArgumentException('Administrator ID must be an integer.');
+        $data = $request->validated();
+        $adminIdRaw = auth()->id();
+        $profileIdRaw = $request->input('profile_id');
+
+        if (!is_numeric($adminIdRaw) || !is_numeric($profileIdRaw)) {
+            return response()->json([
+                'message' => 'Identifiants invalides.'
+            ], 422);
         }
 
-        if (!is_int($profileId)) {
-            throw new \InvalidArgumentException('Profile ID must be an integer.');
-        }
+        $adminId = (int) $adminIdRaw;
+        $profileId = (int) $profileIdRaw;
 
-        if ($this->commentRepository->hasAdministratorAlreadyCommented($adminId, $profileId)) {
+        if ($this->commentRepository->hasAdministratorAlreadyCommented((int)$adminId, (int)$profileId)) {
             return response()->json([
                 'message' => 'Profil déjà commenté.'
             ], 409);
         }
 
-        $data = $request->validated();
+
         $data['administrator_id'] = $adminId;
         $data['content'] = $request->text;
 

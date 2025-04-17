@@ -60,10 +60,10 @@ return [
     */
 
     'providers' => [
-         'administrators' => [
-             'driver' => 'eloquent',
-             'model' => App\Domain\Administrator\Models\Administrator::class,
-         ],
+        'administrators' => [
+            'driver' => 'eloquent',
+            'model' => App\Domain\Administrator\Models\Administrator::class,
+        ],
     ],
 
     /*

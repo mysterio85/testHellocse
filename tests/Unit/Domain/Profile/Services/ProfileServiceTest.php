@@ -10,7 +10,6 @@ use App\Domain\Profile\Models\Profile;
 use App\Domain\Profile\Repositories\ProfileRepository;
 use App\Domain\Profile\Services\ProfileService;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
@@ -21,8 +20,6 @@ use Tests\TestCase;
 
 class ProfileServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected ProfileService $profileService;
 
     protected CreateProfileAction&MockInterface $createAction;
