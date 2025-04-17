@@ -32,8 +32,10 @@ class ProfileService
     /** @param array<string, mixed> $data */
     public function createProfile(array $data): Profile
     {
-        if (isset($data['image_path'])) {
-            $data['image_path'] = $this->storeImage($data['image_path']);
+        $imagePath = $data['image_path'];
+
+        if (isset($imagePath) && ($imagePath instanceof UploadedFile)) {
+            $data['image_path'] = $this->storeImage($imagePath);
         }
 
         $data['administrator_id'] = auth()->id();

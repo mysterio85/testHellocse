@@ -108,7 +108,10 @@ class ProfileServiceTest extends TestCase
 
         /** @var UpdateProfileRequest&MockInterface $request */
         $request = Mockery::mock(UpdateProfileRequest::class);
-        $request->shouldReceive('validated')->andReturn(['first_name' => 'toto']);
+
+        /** @phpstan-ignore-next-line */
+        $request->shouldReceive('validated')
+            ->andReturn(['first_name' => 'toto']);
 
         /** @phpstan-ignore-next-line */
         $this->repository
@@ -166,6 +169,8 @@ class ProfileServiceTest extends TestCase
             ->andReturn($activeProfiles);
 
         $result = $this->profileService->getAllActiveProfiles();
+
+        /** @var array<int, array<string, mixed>> $resultArray */
         $resultArray = $result->toArray(request());
 
         $this->assertInstanceOf(AnonymousResourceCollection::class, $result);

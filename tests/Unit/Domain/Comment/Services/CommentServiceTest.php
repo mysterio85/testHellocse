@@ -49,6 +49,10 @@ class CommentServiceTest extends TestCase
 
         /** @phpstan-ignore-next-line */
         $request->shouldReceive('input')->with('profile_id')->andReturn($profileId);
+
+        /**
+         * @phpstan-ignore-next-line
+         */
         $request->shouldReceive('validated')->andReturn($validatedData);
         $request->text = 'comment test';
 

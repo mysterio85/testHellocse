@@ -3,6 +3,7 @@
 namespace App\Domain\Profile\Actions;
 
 use App\Domain\Profile\Models\Profile;
+use Illuminate\Http\UploadedFile;
 
 class UpdateProfileAction
 {
@@ -13,8 +14,10 @@ class UpdateProfileAction
      */
     public function execute(Profile $profile, array $data): Profile
     {
-        if (isset($data['image_path']) && $data['image_path']->isValid()) {
-            $data['image_path'] = $data['image_path']->store('profiles', 'public');
+        $imagePath = $data['image_path'];
+
+        if (isset($imagePath) && ($imagePath instanceof UploadedFile) && $imagePath->isValid()) {
+            $data['image_path'] = $imagePath->store('profiles', 'public');
         }
         $data['administrator_id'] = auth()->id();
 

@@ -26,6 +26,10 @@ class UpdateProfileActionTest extends TestCase
         $uploadedFile = UploadedFile::fake()->image('profile.jpg');
 
         $authMock = Mockery::mock();
+
+        /**
+         * @phpstan-ignore-next-line
+         */
         $authMock->shouldReceive('id')->andReturn(1);
         app()->instance('auth', $authMock);
 

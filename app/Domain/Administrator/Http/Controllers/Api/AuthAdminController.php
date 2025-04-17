@@ -17,9 +17,15 @@ class AuthAdminController extends Controller
             'password' => 'required',
         ]);
 
-        $admin = Administrator::where('email', $request->email)->first();
+        /** @var string $email */
+        $email = $request->email;
 
-        if (! $admin || ! Hash::check($request->password, $admin->password)) {
+        /** @var string $password */
+        $password = $request->password;
+
+        $admin = Administrator::where('email', $email)->first();
+
+        if (! $admin || ! Hash::check($password, $admin->password)) {
             return response()->json(['message' => 'Identifiants incorrects'], 401);
         }
 

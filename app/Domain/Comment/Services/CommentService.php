@@ -19,6 +19,13 @@ class CommentService
     {
         $adminId = auth()->id();
         $profileId = $request->input('profile_id');
+        if (!is_int($adminId)) {
+            throw new \InvalidArgumentException('Administrator ID must be an integer.');
+        }
+
+        if (!is_int($profileId)) {
+            throw new \InvalidArgumentException('Profile ID must be an integer.');
+        }
 
         if ($this->commentRepository->hasAdministratorAlreadyCommented($adminId, $profileId)) {
             return response()->json([
