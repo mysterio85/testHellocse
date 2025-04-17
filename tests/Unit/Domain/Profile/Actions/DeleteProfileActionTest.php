@@ -4,7 +4,6 @@ namespace Tests\Unit\Domain\Profile\Actions;
 
 use App\Domain\Profile\Actions\DeleteProfileAction;
 use App\Domain\Profile\Models\Profile;
-use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use Tests\TestCase;
@@ -21,16 +20,17 @@ class DeleteProfileActionTest extends TestCase
 
     protected function tearDown(): void
     {
-        Mockery::close();
+        \Mockery::close();
         parent::tearDown();
     }
 
-    #[RunInSeparateProcess] public function testDeleteProfile(): void
+    #[RunInSeparateProcess]
+    public function testDeleteProfile(): void
     {
-        $profileMock = Mockery::mock(Profile::class)->makePartial();
+        /** @var MockInterface&Profile $profileMock */
+        $profileMock = \Mockery::mock(Profile::class)->makePartial();
 
-        /**
-         * @var MockInterface&Profile $profileMock
+        /*
          * @phpstan-ignore-next-line
          */
         $profileMock->shouldReceive('delete')

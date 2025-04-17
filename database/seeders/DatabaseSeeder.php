@@ -15,8 +15,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         Administrator::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name'     => 'Test User',
+            'email'    => 'test@example.com',
             'password' => 'test',
         ]);
 
@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
                 ->each(function ($profile) use ($administrator) {
                     Comment::factory()->create([
                         'administrator_id' => $administrator->id,
-                        'profile_id' => $profile->id,
+                        'profile_id'       => $profile->id,
                     ]);
                 });
         });

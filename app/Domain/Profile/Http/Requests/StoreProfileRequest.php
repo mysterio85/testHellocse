@@ -20,10 +20,10 @@ class StoreProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'last_name' => 'required|string|max:255',
+            'last_name'  => 'required|string|max:255',
             'first_name' => 'required|string|max:255',
             'image_path' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'status' => 'required|in:inactive,pending,active',
+            'status'     => 'required|in:inactive,pending,active',
         ];
     }
 }

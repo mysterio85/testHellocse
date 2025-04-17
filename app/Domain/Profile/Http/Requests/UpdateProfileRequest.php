@@ -17,9 +17,9 @@ class UpdateProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'last_name' => 'sometimes|string|max:255',
+            'last_name'  => 'sometimes|string|max:255',
             'first_name' => 'sometimes|string|max:255',
-            'status' => 'sometimes|in:inactive,pending,active',
+            'status'     => 'sometimes|in:inactive,pending,active',
             'image_path' => 'nullable|image|max:2048',
         ];
     }

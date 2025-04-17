@@ -20,8 +20,8 @@ class StoreCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'text' => 'required|string',
-            'profile_id' => 'required|integer|exists:profiles,id'
+            'text'       => 'required|string',
+            'profile_id' => 'required|integer|exists:profiles,id',
         ];
     }
 }

@@ -13,7 +13,7 @@ class AuthAdminController extends Controller
     public function login(Request $request): JsonResponse
     {
         $request->validate([
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required',
         ]);
 
@@ -25,7 +25,7 @@ class AuthAdminController extends Controller
 
         $admin = Administrator::where('email', $email)->first();
 
-        if (! $admin || ! Hash::check($password, $admin->password)) {
+        if (!$admin || !Hash::check($password, $admin->password)) {
             return response()->json(['message' => 'Identifiants incorrects'], 401);
         }
 
@@ -34,7 +34,7 @@ class AuthAdminController extends Controller
         $token = $admin->createToken('admin-token')->plainTextToken;
 
         return response()->json([
-            'token' => $token,
+            'token'         => $token,
             'administrator' => $admin,
         ]);
     }
@@ -50,5 +50,4 @@ class AuthAdminController extends Controller
 
         return response()->json(['message' => 'Déconnexion réussie.'], 200);
     }
-
 }

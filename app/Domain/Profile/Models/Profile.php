@@ -26,7 +26,6 @@ class Profile extends Model
         'status',
     ];
 
-
     /**
      * @return BelongsTo<Administrator, Profile>
      */
@@ -38,7 +37,6 @@ class Profile extends Model
         return $administrator;
     }
 
-
     /**
      * @return HasMany<Comment, Profile>
      */
@@ -49,7 +47,6 @@ class Profile extends Model
 
         return $comments;
     }
-
 
     protected static function newFactory(): ProfileFactory
     {

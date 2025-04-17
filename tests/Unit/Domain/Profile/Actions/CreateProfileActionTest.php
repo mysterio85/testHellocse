@@ -4,7 +4,6 @@ namespace Tests\Unit\Domain\Profile\Actions;
 
 use App\Domain\Profile\Actions\CreateProfileAction;
 use App\Domain\Profile\Models\Profile;
-use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -17,31 +16,31 @@ class CreateProfileActionTest extends TestCase
         parent::setUp();
 
         /** @var CreateProfileAction&MockInterface $createAction */
-        $createAction = Mockery::mock(CreateProfileAction::class)->makePartial();
+        $createAction       = \Mockery::mock(CreateProfileAction::class)->makePartial();
         $this->createAction = $createAction;
     }
 
     public function testCreatesProfile(): void
     {
         $data = [
-            'first_name' => 'toto',
-            'last_name' => 'tata',
+            'first_name'       => 'toto',
+            'last_name'        => 'tata',
             'administrator_id' => 1,
-            'status' => 'active',
-            'image_path' => '/tmp/test',
+            'status'           => 'active',
+            'image_path'       => '/tmp/test',
         ];
 
-        $profileMock = Mockery::mock(Profile::class);
+        $profileMock = \Mockery::mock(Profile::class);
 
-        /** @phpstan-ignore-next-line */
+        /* @phpstan-ignore-next-line */
         $profileMock->shouldReceive('getAttribute')
             ->with('first_name')
             ->andReturn('toto');
 
-        /** @phpstan-ignore-next-line */
+        /* @phpstan-ignore-next-line */
         $profileMock->shouldReceive('create')->once()->with($data)->andReturn($profileMock);
 
-        /** @phpstan-ignore-next-line */
+        /* @phpstan-ignore-next-line */
         $this->createAction->shouldReceive('execute')->once()->with($data)->andReturn($profileMock);
 
         $result = $this->createAction->execute($data);
@@ -53,14 +52,14 @@ class CreateProfileActionTest extends TestCase
     public function testFailsWhenDataIsInvalid(): void
     {
         $data = [
-            'first_name' => '',
-            'last_name' => 'toto',
+            'first_name'       => '',
+            'last_name'        => 'toto',
             'administrator_id' => 1,
-            'status' => 'active',
-            'image_path' => '/tmp/phpnSKERH',
+            'status'           => 'active',
+            'image_path'       => '/tmp/phpnSKERH',
         ];
 
-        /** @phpstan-ignore-next-line */
+        /* @phpstan-ignore-next-line */
         $this->createAction
             ->shouldReceive('execute')
             ->once()->with($data)

@@ -8,11 +8,11 @@ class CreateCommentAction
 {
     /**
      * @param array<string, mixed> $data
+     *
      * @return Comment
      */
     public function execute(array $data): Comment
     {
         return Comment::create($data);
     }
-
 }

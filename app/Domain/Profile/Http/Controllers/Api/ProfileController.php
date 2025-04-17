@@ -34,7 +34,7 @@ class ProfileController extends Controller
 
         return response()->json([
             'message' => 'Profil mis à jour',
-            'profile' => $profile
+            'profile' => $profile,
         ], 201);
     }
 

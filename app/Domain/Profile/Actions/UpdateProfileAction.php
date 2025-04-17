@@ -10,6 +10,7 @@ class UpdateProfileAction
     /**
      * @param Profile $profile
      * @param array<string, mixed> $data
+     *
      * @return Profile
      */
     public function execute(Profile $profile, array $data): Profile

@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class ProfileFactory extends Factory
 {
     protected $model = Profile::class;
+
     /**
      * Define the model's default state.
      *
@@ -21,10 +22,10 @@ class ProfileFactory extends Factory
     {
         return [
             'administrator_id' => Administrator::factory(),
-            'last_name' => fake()->lastName(),
-            'first_name' => fake()->firstName(),
-            'image_path' => 'profiles/default.png',
-            'status' => fake()->randomElement(['inactive', 'pending', 'active']),
+            'last_name'        => fake()->lastName(),
+            'first_name'       => fake()->firstName(),
+            'image_path'       => 'profiles/default.png',
+            'status'           => fake()->randomElement(['inactive', 'pending', 'active']),
         ];
     }
 }

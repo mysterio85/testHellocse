@@ -8,6 +8,7 @@ class CreateProfileAction
 {
     /**
      * @param array<string, mixed> $data
+     *
      * @return Profile
      */
     public function execute(array $data): Profile

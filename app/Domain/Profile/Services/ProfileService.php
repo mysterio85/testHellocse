@@ -24,7 +24,7 @@ class ProfileService
 
     public function getAllActiveProfiles(): AnonymousResourceCollection
     {
-        $profiles =  $this->profileRepository->getAllActive();
+        $profiles = $this->profileRepository->getAllActive();
 
         return ProfileResource::collection($profiles);
     }
@@ -41,11 +41,11 @@ class ProfileService
         $data['administrator_id'] = auth()->id();
 
         return $this->createAction->execute($data);
-
     }
+
     public function updateProfile(UpdateProfileRequest $request, int $profileId): Profile
     {
-        $profile = $this->profileRepository->getById($profileId);
+        $profile   = $this->profileRepository->getById($profileId);
         $validated = $request->validated();
 
         return $this->updateAction->execute($profile, $validated);
@@ -62,5 +62,4 @@ class ProfileService
     {
         return $image->store('profiles', 'public');
     }
-
 }
