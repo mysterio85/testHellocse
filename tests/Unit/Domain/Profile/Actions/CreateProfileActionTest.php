@@ -5,17 +5,20 @@ namespace Tests\Unit\Domain\Profile\Actions;
 use App\Domain\Profile\Actions\CreateProfileAction;
 use App\Domain\Profile\Models\Profile;
 use Mockery;
+use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 
 class CreateProfileActionTest extends TestCase
 {
-    protected $createAction;
+    protected MockInterface&CreateProfileAction $createAction;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->createAction = Mockery::mock(CreateProfileAction::class)->makePartial();
+        /** @var CreateProfileAction&MockInterface $createAction */
+        $createAction = Mockery::mock(CreateProfileAction::class)->makePartial();
+        $this->createAction = $createAction;
     }
 
     public function testCreatesProfile(): void
@@ -30,12 +33,15 @@ class CreateProfileActionTest extends TestCase
 
         $profileMock = Mockery::mock(Profile::class);
 
+        /** @phpstan-ignore-next-line */
         $profileMock->shouldReceive('getAttribute')
             ->with('first_name')
             ->andReturn('toto');
 
+        /** @phpstan-ignore-next-line */
         $profileMock->shouldReceive('create')->once()->with($data)->andReturn($profileMock);
 
+        /** @phpstan-ignore-next-line */
         $this->createAction->shouldReceive('execute')->once()->with($data)->andReturn($profileMock);
 
         $result = $this->createAction->execute($data);
@@ -54,6 +60,7 @@ class CreateProfileActionTest extends TestCase
             'image_path' => '/tmp/phpnSKERH',
         ];
 
+        /** @phpstan-ignore-next-line */
         $this->createAction
             ->shouldReceive('execute')
             ->once()->with($data)

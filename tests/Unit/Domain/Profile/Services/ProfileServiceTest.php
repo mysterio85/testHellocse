@@ -25,34 +25,33 @@ class ProfileServiceTest extends TestCase
 
     protected ProfileService $profileService;
 
-    /**
-     * @var CreateProfileAction|MockInterface
-     */
-    protected CreateProfileAction|MockInterface $createAction;
+    protected CreateProfileAction&MockInterface $createAction;
 
-    /**
-     * @var UpdateProfileAction|MockInterface
-     */
-    protected UpdateProfileAction|MockInterface $updateAction;
+    protected UpdateProfileAction&MockInterface $updateAction;
 
-    /**
-     * @var DeleteProfileAction|MockInterface
-     */
-    protected DeleteProfileAction|MockInterface $deleteAction;
+    protected DeleteProfileAction&MockInterface $deleteAction;
 
-    /**
-     * @var ProfileRepository|MockInterface
-     */
-    protected ProfileRepository|MockInterface $repository;
+    protected ProfileRepository&MockInterface $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->createAction = Mockery::mock(CreateProfileAction::class);
-        $this->updateAction = Mockery::mock(UpdateProfileAction::class);
-        $this->deleteAction = Mockery::mock(DeleteProfileAction::class);
-        $this->repository = Mockery::mock(ProfileRepository::class);
+        /** @var  CreateProfileAction&MockInterface $createAction */
+        $createAction = Mockery::mock(CreateProfileAction::class);
+        $this->createAction = $createAction;
+
+        /** @var  UpdateProfileAction&MockInterface $updateAction */
+        $updateAction = Mockery::mock(UpdateProfileAction::class);
+        $this->updateAction = $updateAction;
+
+        /** @var  DeleteProfileAction&MockInterface $deleteAction */
+        $deleteAction = Mockery::mock(DeleteProfileAction::class);
+        $this->deleteAction = $deleteAction;
+
+        /** @var  ProfileRepository&MockInterface $repository */
+        $repository = Mockery::mock(ProfileRepository::class);
+        $this->repository = $repository;
 
         $this->profileService = new ProfileService(
             $this->createAction,
@@ -84,10 +83,12 @@ class ProfileServiceTest extends TestCase
             ->with(Mockery::type('array'))
             ->andReturn($expectedProfile);
 
+        /** @var  ProfileService&MockInterface $service */
         $service = Mockery::mock(ProfileService::class, [
             $this->createAction, $this->updateAction, $this->deleteAction, $this->repository
         ])->makePartial();
 
+        /** @phpstan-ignore-next-line */
         $service->shouldAllowMockingProtectedMethods()
             ->shouldReceive('storeImage')
             ->once()
@@ -104,9 +105,12 @@ class ProfileServiceTest extends TestCase
     #[RunInSeparateProcess] public function testUpdateProfileCallsAction(): void
     {
         $mockProfile = new Profile();
+
+        /** @var UpdateProfileRequest&MockInterface $request */
         $request = Mockery::mock(UpdateProfileRequest::class);
         $request->shouldReceive('validated')->andReturn(['first_name' => 'toto']);
 
+        /** @phpstan-ignore-next-line */
         $this->repository
             ->shouldReceive('getById')
             ->with(1)
@@ -127,6 +131,7 @@ class ProfileServiceTest extends TestCase
     {
         $profile = new Profile(['id' => 1, 'first_name' => 'Test', 'last_name' => 'User']);
 
+        /** @phpstan-ignore-next-line */
         $this->repository
             ->shouldReceive('getById')
             ->with(1)
@@ -154,6 +159,7 @@ class ProfileServiceTest extends TestCase
 
         $activeProfiles = $profiles->filter(fn ($profile) => $profile->status === 'active')->values();
 
+        /** @phpstan-ignore-next-line */
         $this->repository
             ->shouldReceive('getAllActive')
             ->once()

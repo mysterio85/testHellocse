@@ -10,20 +10,26 @@ use App\Domain\Comment\Services\CommentService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Mockery;
+use Mockery\MockInterface;
 use Tests\TestCase;
 
 class CommentServiceTest extends TestCase
 {
     protected CommentService $commentService;
-    protected (Mockery\MockInterface&Mockery\LegacyMockInterface)|CreateCommentAction $createCommentAction;
-    protected CommentRepository|(Mockery\MockInterface&Mockery\LegacyMockInterface) $commentRepository;
+    protected CreateCommentAction&MockInterface $createCommentAction;
+    protected CommentRepository&MockInterface $commentRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->createCommentAction = Mockery::mock(CreateCommentAction::class);
-        $this->commentRepository = Mockery::mock(CommentRepository::class);
+        /** @var CreateCommentAction&MockInterface $createCommentAction */
+        $createCommentAction = Mockery::mock(CreateCommentAction::class);
+        $this->createCommentAction = $createCommentAction;
+
+        /** @var CommentRepository&MockInterface $commentRepository */
+        $commentRepository = Mockery::mock(CommentRepository::class);
+        $this->commentRepository = $commentRepository;
 
         $this->commentService = new CommentService(
             $this->createCommentAction,
@@ -31,8 +37,9 @@ class CommentServiceTest extends TestCase
         );
     }
 
-    public function testCreateCommentWhenNotAlreadyCommented()
+    public function testCreateCommentWhenNotAlreadyCommented(): void
     {
+        /** @var StoreCommentRequest&MockInterface $request */
         $request = Mockery::mock(StoreCommentRequest::class);
         $adminId = 1;
         $profileId = 10;
@@ -40,10 +47,12 @@ class CommentServiceTest extends TestCase
 
         $this->authenticateAsAdministrator($adminId);
 
+        /** @phpstan-ignore-next-line */
         $request->shouldReceive('input')->with('profile_id')->andReturn($profileId);
         $request->shouldReceive('validated')->andReturn($validatedData);
         $request->text = 'comment test';
 
+        /** @phpstan-ignore-next-line */
         $this->commentRepository
             ->shouldReceive('hasAdministratorAlreadyCommented')
             ->once()
@@ -52,6 +61,7 @@ class CommentServiceTest extends TestCase
 
         $expectedComment = new Comment(['content' => 'comment test']);
 
+        /** @phpstan-ignore-next-line */
         $this->createCommentAction
             ->shouldReceive('execute')
             ->once()
@@ -69,16 +79,19 @@ class CommentServiceTest extends TestCase
         $this->assertEquals($expectedComment->toArray(), $response->getData(true));
     }
 
-    public function testCreateCommentWhenAlreadyCommented()
+    public function testCreateCommentWhenAlreadyCommented(): void
     {
+        /** @var StoreCommentRequest&MockInterface $request */
         $request = Mockery::mock(StoreCommentRequest::class);
         $adminId = 1;
         $profileId = 10;
 
         $this->authenticateAsAdministrator($adminId);
 
+        /** @phpstan-ignore-next-line */
         $request->shouldReceive('input')->with('profile_id')->andReturn($profileId);
 
+        /** @phpstan-ignore-next-line */
         $this->commentRepository
             ->shouldReceive('hasAdministratorAlreadyCommented')
             ->once()

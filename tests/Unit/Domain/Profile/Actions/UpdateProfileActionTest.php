@@ -7,6 +7,7 @@ use App\Domain\Profile\Models\Profile;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Mockery;
+use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use Tests\TestCase;
 
@@ -28,7 +29,12 @@ class UpdateProfileActionTest extends TestCase
         $authMock->shouldReceive('id')->andReturn(1);
         app()->instance('auth', $authMock);
 
+        /** @var Profile&MockInterface $profileMock */
         $profileMock = Mockery::mock(Profile::class);
+
+        /**
+         * @phpstan-ignore-next-line
+         */
         $profileMock->shouldReceive('update')
             ->once()
             ->with(Mockery::on(function ($data) {

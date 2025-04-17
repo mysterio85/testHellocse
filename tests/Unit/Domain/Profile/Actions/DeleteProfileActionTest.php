@@ -29,7 +29,10 @@ class DeleteProfileActionTest extends TestCase
     {
         $profileMock = Mockery::mock(Profile::class)->makePartial();
 
-        /** @var MockInterface&Profile $profileMock */
+        /**
+         * @var MockInterface&Profile $profileMock
+         * @phpstan-ignore-next-line
+         */
         $profileMock->shouldReceive('delete')
             ->once()
             ->andReturn(true);
