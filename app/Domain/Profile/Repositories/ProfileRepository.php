@@ -19,5 +19,4 @@ class ProfileRepository
     {
         return Profile::findOrFail($id);
     }
-
 }

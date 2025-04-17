@@ -16,6 +16,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Mockery;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use Tests\TestCase;
 
 class ProfileServiceTest extends TestCase
@@ -24,9 +25,24 @@ class ProfileServiceTest extends TestCase
 
     protected ProfileService $profileService;
 
+    /**
+     * @var CreateProfileAction|MockInterface
+     */
     protected CreateProfileAction|MockInterface $createAction;
-    protected UpdateProfileAction $updateAction;
-    protected DeleteProfileAction $deleteAction;
+
+    /**
+     * @var UpdateProfileAction|MockInterface
+     */
+    protected UpdateProfileAction|MockInterface $updateAction;
+
+    /**
+     * @var DeleteProfileAction|MockInterface
+     */
+    protected DeleteProfileAction|MockInterface $deleteAction;
+
+    /**
+     * @var ProfileRepository|MockInterface
+     */
     protected ProfileRepository|MockInterface $repository;
 
     protected function setUp(): void
@@ -46,7 +62,7 @@ class ProfileServiceTest extends TestCase
         );
     }
 
-    public function testCreateProfile(): void
+    #[RunInSeparateProcess] public function testCreateProfile(): void
     {
         $fakeImage = UploadedFile::fake()->image('profile.jpg');
         $data = [
@@ -65,6 +81,7 @@ class ProfileServiceTest extends TestCase
         $this->createAction
             ->shouldReceive('execute')
             ->once()
+            ->with(Mockery::type('array'))
             ->andReturn($expectedProfile);
 
         $service = Mockery::mock(ProfileService::class, [
@@ -84,7 +101,7 @@ class ProfileServiceTest extends TestCase
     }
 
 
-    public function testUpdateProfileCallsAction(): void
+    #[RunInSeparateProcess] public function testUpdateProfileCallsAction(): void
     {
         $mockProfile = new Profile();
         $request = Mockery::mock(UpdateProfileRequest::class);
@@ -106,7 +123,7 @@ class ProfileServiceTest extends TestCase
         $this->assertEquals($mockProfile, $result);
     }
 
-    public function testDeleteProfile(): void
+    #[RunInSeparateProcess] public function testDeleteProfile(): void
     {
         $profile = new Profile(['id' => 1, 'first_name' => 'Test', 'last_name' => 'User']);
 
@@ -126,7 +143,8 @@ class ProfileServiceTest extends TestCase
         $this->assertTrue($result);
     }
 
-    public function testGetAllActiveProfiles(): void
+
+    #[RunInSeparateProcess] public function testGetAllActiveProfiles(): void
     {
         $profiles = new EloquentCollection([
             new Profile(['first_name' => 'toto', 'status' => 'active']),
